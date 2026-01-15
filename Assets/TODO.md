@@ -9,14 +9,16 @@
 
 - drew sketches for procedural generator
 - created EZRoomGenerator sample scene
+- created buggy dfs maze generator
+
+# Day 3: 1/15/26
+
+- set up Git repo
+
 
 
 ----------------------------------
 
 TODO:
 
-- implement running backward / strafing animations
-- figure out how to make prototype material tile properly
-
-- make sure to use these animations:
-    - 
+- 
