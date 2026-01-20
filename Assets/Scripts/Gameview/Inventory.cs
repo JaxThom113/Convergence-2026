@@ -97,7 +97,7 @@ public class Inventory : MonoBehaviour
             }
             
             cardObject.GetComponent<ApplyCard>().CardSO = card;  
-            Debug.Log("Card added: " + card.cardName);
+            // Debug.Log("Card added: " + card.cardName);
         }
         
         // Calculate scroll limits based on content height
@@ -126,7 +126,7 @@ public class Inventory : MonoBehaviour
         {
             Transform cardTransform = inventoryContainer.transform.GetChild(i);
             RectTransform rectTransform = cardTransform.GetComponent<RectTransform>();
-            
+            scrollbar.value = Mathf.Clamp01((currentScrollY - minScrollY) / (maxScrollY - minScrollY));
             if (rectTransform != null)
             {
                 Vector2 basePos = cardBasePositions[i];
@@ -146,7 +146,7 @@ public class Inventory : MonoBehaviour
         if(scrollRange > 0.1f) { 
             float newScrollY = minScrollY + (value) * scrollRange; 
             if(Mathf.Abs(newScrollY - currentScrollY) > 0.1f) {
-                currentScrollY = newScrollY;
+                currentScrollY = newScrollY;   
                 ApplyScroll();
             }
         } 
