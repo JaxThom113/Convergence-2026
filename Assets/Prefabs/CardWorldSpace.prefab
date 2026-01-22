@@ -8,9 +8,13 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1220318981422873295, guid: cfba1b7458b6d3145b84a4b9c4e91de2, type: 3}
+      propertyPath: CardSO
+      value: 
+      objectReference: {fileID: 11400000, guid: 2d1da55b78b31e240b79efd43e8a85f6, type: 2}
     - target: {fileID: 5895756236548417177, guid: cfba1b7458b6d3145b84a4b9c4e91de2, type: 3}
       propertyPath: m_Name
-      value: Card
+      value: CardWorldSpace
       objectReference: {fileID: 0}
     - target: {fileID: 7997360397170005758, guid: cfba1b7458b6d3145b84a4b9c4e91de2, type: 3}
       propertyPath: m_Pivot.x

@@ -19,7 +19,7 @@ public class Inventory : MonoBehaviour
     private float totalContentHeight;
 
     [Header("Settings")]
-    public List<Card> cards = new List<Card>(); 
+    public List<CardSO> cards = new List<CardSO>(); 
     public int cardsPerRow = 5;  
     public float padding = 90; 
     public float lineSpacing = 200;
@@ -32,7 +32,7 @@ public class Inventory : MonoBehaviour
     private RectTransform containerRectTransform;
     private List<Vector2> cardBasePositions = new List<Vector2>(); // Store original card positions
     private bool displayed = false;
-    public void AddCard(Card card) => cards.Add(card); 
+    public void AddCard(CardSO card) => cards.Add(card); 
     public int GetCardCount() => cards.Count;  
  
     public void ToggleCards() { 
@@ -69,7 +69,7 @@ public class Inventory : MonoBehaviour
       
         
         for (int i = 0; i < cards.Count; i++) {  
-             Card card = cards[i]; 
+             CardSO card = cards[i]; 
 
             int row = i / cardsPerRow; 
             int col = i % cardsPerRow;           
@@ -96,7 +96,7 @@ public class Inventory : MonoBehaviour
                     cardObject.transform.localPosition = cardPosition;
             }
             
-            cardObject.GetComponent<ApplyCard>().CardSO = card;  
+            cardObject.GetComponent<ApplyCard>().card = new Card(card);  
             // Debug.Log("Card added: " + card.cardName);
         }
         
