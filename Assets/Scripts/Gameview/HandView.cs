@@ -1,24 +1,41 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine; 
 using DG.Tweening;
 using UnityEngine.Splines;
 
-public class HandView : MonoBehaviour
+public class HandView : Singleton<HandView>
 {
     public SplineContainer splineContainer; 
     public float duration = 0.5f;  
     private List<ApplyCard> cards = new();  
-
+    public bool IsTweening {get; set;} = false;
     public IEnumerator AddCard(ApplyCard card)
     {
         cards.Add(card);
         yield return UpdateCardPositions(card); 
     } 
+    public ApplyCard RemoveCard(Card card)
+    { 
+        ApplyCard applyCard = GetApplyCard(card); 
+        if (applyCard == null) return null;
+        cards.Remove(applyCard);
+        StartCoroutine(UpdateCardPositions(null));
+        return applyCard;
+        
+    } 
+    private ApplyCard GetApplyCard(Card card){ 
+        return cards.Where(applyCard => applyCard.card == card).FirstOrDefault();
+    }
+    
     private IEnumerator UpdateCardPositions(ApplyCard card)
-    {
+    {  
+        cards.RemoveAll(c => c == null || c.gameObject == null); 
+
+       
         if(cards.Count == 0) yield break; // Stop if no cards
-        float cardSpacing = 1f/10f; // spacing between cards along the spline
+        float cardSpacing = 1.5f/10f; // spacing between cards along the spline
         float firstCardPosition = 0.5f - (cards.Count-1)*cardSpacing/2f; //Finds the center to place the first card 
         //spline is percentage based, so 0.5 is the center, but takes into account number of cards so new card will always be in the center
         Spline spline = splineContainer.Spline; 
@@ -32,6 +49,7 @@ public class HandView : MonoBehaviour
             cards[i].transform.DORotateQuaternion(rotation, duration);
         } 
         yield return new WaitForSeconds(duration); 
+      
     }
 
 }

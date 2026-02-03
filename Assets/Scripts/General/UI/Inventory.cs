@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine; 
 using UnityEngine.UI;
 using TMPro;
-public class Inventory : MonoBehaviour
+public class Inventory : Singleton<Inventory>
 {   
     [Header("References")]
     public GameObject cardPrefab;  
