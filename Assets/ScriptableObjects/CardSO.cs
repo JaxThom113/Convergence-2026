@@ -9,6 +9,13 @@ public enum Element
     Cold, 
     Lightning, 
     Poison
+} 
+public enum CardType
+{
+    Attaction, 
+    Action,
+    Runes,
+    Terrunes
 }
 
 public class CardSO : ScriptableObject
@@ -18,6 +25,8 @@ public class CardSO : ScriptableObject
     public Sprite cardBorder; 
     public Sprite cardIcon; 
     public string cardDescription;  
-    public Element cardElement; 
-
+    public Element cardElement;  
+    public Sprite cardElementIcon;
+    //public CardType cardType; 
+    //public Sprite cardTypeIcon;
 }

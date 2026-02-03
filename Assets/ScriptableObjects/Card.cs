@@ -11,16 +11,21 @@ public class Card
     public string cardName => data.cardName; 
     public Sprite cardBorder => data.cardBorder;
     public Sprite cardIcon => data.cardIcon;
-
+    //public Sprite cardTypeIcon => data.cardTypeIcon;
+    //public Sprite cardElementIcon => data.cardElementIcon;
     public string cardDescription {get; private set; } 
     public int cardCost {get; private set; }
     public Element cardElement {get; private set; }
+    //public CardType cardType {get; private set; }
     private CardSO data;
     public Card(CardSO dataSO) { 
         data = dataSO;
         cardDescription = dataSO.cardDescription;  
         cardCost = dataSO.cardCost;     
-        cardElement = dataSO.cardElement;
+        cardElement = dataSO.cardElement;  
+        //cardElementIcon = dataSO.cardElementIcon;
+        //cardType = dataSO.cardType; 
+        //cardTypeIcon = dataSO.cardTypeIcon;
     }
     
 }
