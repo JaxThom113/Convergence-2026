@@ -3,10 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using DG.Tweening;
+using System;
 
 public class LevelBounds : MonoBehaviour
 {
+    [Header("Transition Screen")]
     public GameObject transitionScreen;
+
+    [Header("Script References")]
+    public ProcGen2 procGen;
+    public PlayerMovement2 playerMovement;
 
     void OnTriggerEnter2D(Collider2D other)
     {
@@ -20,6 +26,7 @@ public class LevelBounds : MonoBehaviour
     IEnumerator LevelTransition()
     {
         // have player continue moving upward
+        playerMovement.enabled = false;
 
         // transition swipe effect
 
@@ -28,9 +35,8 @@ public class LevelBounds : MonoBehaviour
         transitionScreen.transform.DOMoveY(0, 0.5f).SetEase(Ease.OutCubic);
         yield return new WaitForSeconds(1f);
 
-
         // generate new level
-        //GenerateLevel();
+        procGen.GenerateLevel();
 
         // transition swipe out and reset position
         transitionScreen.transform.DOMoveY(40, 0.5f).SetEase(Ease.OutCubic);
@@ -41,6 +47,8 @@ public class LevelBounds : MonoBehaviour
         // tp player to bottom of the screen, have player move upward to starting cell
 
         // return control to the player  
+        playerMovement.enabled = true;
+        Debug.Log("Level transition complete");
 
         yield return null;
     }

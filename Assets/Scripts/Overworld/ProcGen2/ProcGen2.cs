@@ -93,7 +93,7 @@ public class ProcGen2 : MonoBehaviour
         Main generation function
     */
 
-    void GenerateLevel()
+    public void GenerateLevel()
     {
         // Step #1: Initialize grid full of walls (1's)
         CreateMaze();
