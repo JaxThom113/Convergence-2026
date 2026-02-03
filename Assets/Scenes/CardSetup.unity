@@ -850,6 +850,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 286d63474475e0d4cb935026d7a2c774, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  splineContainer: {fileID: 718712520}
+  duration: 0.5
 --- !u!1 &626543516
 GameObject:
   m_ObjectHideFlags: 0
