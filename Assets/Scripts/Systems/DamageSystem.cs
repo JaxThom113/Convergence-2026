@@ -5,8 +5,8 @@ using DG.Tweening;
 
 public class DamageSystem : MonoBehaviour
 { 
-    public GameObject knife;  
-    public Health health;  
+    [SerializeField] private GameObject knife;  
+    [SerializeField] private Health health;  
     // Start is called before the first frame update
     private void OnEnable() 
     { 

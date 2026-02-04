@@ -11,14 +11,20 @@ public class ApplyCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     //Data is handled in the Card class. 
     //Data originates from the CardSO scriptable object, 
     //and is then fed to the Card class, where it is finally applied here. 
-    public Card card;
-    public Sprite cardBorder; 
-    public Sprite cardIcon;  
-    public int cardCost; 
-    public string cardDescription; 
-    public Element cardElement; 
-    public string cardName;   
-    public GameObject wrapper; 
+    public Card card; 
+    
+    [SerializeField] public GameObject cardBorder; 
+    [SerializeField] public GameObject cardIcon;  
+    [SerializeField] public GameObject cardCostText;  
+    //[SerializeField] public GameObject cardTypeIcon;  
+    [SerializeField] public GameObject cardTypeIcon; 
+    [SerializeField] public GameObject cardTypeName; 
+    [SerializeField] public GameObject cardElementIcon;  
+    //[SerializeField] private GameObject cardActions;  
+    [SerializeField] public GameObject cardDescriptionText; 
+    //[SerializeField] private GameObject cardElement; 
+    [SerializeField] public GameObject cardNameText;   
+    [SerializeField] public GameObject wrapper; 
 
     private bool tweening = true;
     private Vector3 initialPosition;
@@ -28,12 +34,17 @@ public class ApplyCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     public void Setup(Card card)
     { 
         this.card = card; 
-        cardBorder = card.cardBorder; 
-        cardIcon = card.cardIcon; 
-        cardCost = card.cardCost; 
-        cardDescription = card.cardDescription; 
-        cardElement = card.cardElement; 
-        cardName = card.cardName;   
+        cardBorder.GetComponent<Image>().sprite = card.cardBorder; 
+        cardIcon.GetComponent<Image>().sprite = card.cardIcon; 
+        cardCostText.GetComponent<TextMeshProUGUI>().text = card.cardCost.ToString(); 
+        cardDescriptionText.GetComponent<TextMeshProUGUI>().text = card.cardDescription; 
+        //cardElement.GetComponent<Image>().sprite = card.cardElement;  
+        cardTypeIcon.GetComponent<Image>().sprite = card.cardTypeIcon;
+        cardElementIcon.GetComponent<Image>().sprite = card.cardElementIcon;
+        //cardActions.GetComponent<Image>().sprite = card.cardActions;
+        cardNameText.GetComponent<TextMeshProUGUI>().text = card.cardName;   
+        //cardType = card.cardType; 
+        cardTypeName.GetComponent<TextMeshProUGUI>().text = card.cardType.ToString();
     }
     void OnEnable()
     {
@@ -96,10 +107,19 @@ public class ApplyCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        Interactions.Instance.PlayerIsDragging = false;
         
-        transform.DOMove(initialPosition, 0.2f);
-        transform.DORotateQuaternion(initialRotation, 0.2f);
+        if(transform.localPosition.y > 200f) 
+        { 
+            PlayCardGA playCardGA = new(card); 
+            ActionSystem.Instance.Perform(playCardGA); 
+            Debug.Log("Played card: " + card.cardName);
+        } 
+        else
+        {
+            transform.DOMove(initialPosition, 0.2f);
+            transform.DORotateQuaternion(initialRotation, 0.2f);
+        }
+        
     }
     
     public void OnPointerExit(PointerEventData eventData)

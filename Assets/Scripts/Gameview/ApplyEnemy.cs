@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class ApplyEnemy : MonoBehaviour
 { 
-    public Enemy enemy;  
-    public Sprite enemyIcon;   
+    [SerializeField] private Enemy enemy;  
+    [SerializeField] private Sprite enemyIcon;   
     void Setup(Enemy enemy) { 
         this.enemy = enemy; 
         enemyIcon = enemy.enemyIcon; 

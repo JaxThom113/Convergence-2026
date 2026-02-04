@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class IncreaseStatsGA : GameAction
 {
-    public Enemy Target; 
-
-    public int AttackIncreaseAmount; 
-
-    public int HealthIncreaseAmount; 
+    [SerializeField] private Enemy Target; 
+    
+    [SerializeField] private int AttackIncreaseAmount; 
+    
+    [SerializeField] private int HealthIncreaseAmount;
 
     public IncreaseStatsGA(Enemy target, int attackIncreaseAmount, int healthIncreaseAmount) 
     { 

@@ -26,7 +26,8 @@ public class CardSO : ScriptableObject
     public Sprite cardIcon; 
     public string cardDescription;  
     public Element cardElement;  
-    public Sprite cardElementIcon;
-    //public CardType cardType; 
-    //public Sprite cardTypeIcon;
+    public Sprite cardElementIcon; 
+    [SerializeReference] public List<Actions> actions; 
+    public CardType cardType; 
+    public Sprite cardTypeIcon;
 }

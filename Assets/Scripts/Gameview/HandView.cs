@@ -7,7 +7,7 @@ using UnityEngine.Splines;
 
 public class HandView : Singleton<HandView>
 {
-    public SplineContainer splineContainer; 
+    [SerializeField] private SplineContainer splineContainer; 
     public float duration = 0.5f;  
     private List<ApplyCard> cards = new();  
     public bool IsTweening {get; set;} = false;

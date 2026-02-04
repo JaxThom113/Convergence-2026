@@ -5,10 +5,10 @@ using DG.Tweening;
 public class CardSystem : Singleton<CardSystem>
 {
     // Start is called before the first frame update 
-    public CardSO cardSO; 
+    [SerializeField] private CardSO cardSO; 
     
-    public Transform drawPileTransform;
-    public Transform discardPileTransform;
+    [SerializeField] private Transform drawPileTransform;
+    [SerializeField] private Transform discardPileTransform;
    
     
     private List<Card> drawPile = new(); 
@@ -18,15 +18,18 @@ public class CardSystem : Singleton<CardSystem>
     private void OnEnable() 
     { 
         ActionSystem.AttachPerformer<DrawCardGA>(DrawCardPerformer);
-        ActionSystem.AttachPerformer<DiscardCardGA>(DiscardCardPerformer); 
+        ActionSystem.AttachPerformer<DiscardCardGA>(DiscardCardPerformer);  
+        ActionSystem.AttachPerformer<PlayCardGA>(PlayCardPerformer);
         ActionSystem.SubscribeReaction<EnemyTurnGA>(EnemyTurnPreReaction, ReactionTiming.PRE); 
-        ActionSystem.SubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction, ReactionTiming.POST);
+        ActionSystem.SubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction, ReactionTiming.POST); 
+        
      } 
     private void OnDisable() 
     {  
         UnityEngine.Debug.Log("CardSystem Disabled");
         ActionSystem.DetachPerformer<DrawCardGA>();
         ActionSystem.DetachPerformer<DiscardCardGA>(); 
+        ActionSystem.DetachPerformer<PlayCardGA>();
         ActionSystem.UnsubscribeReaction<EnemyTurnGA>(EnemyTurnPreReaction, ReactionTiming.PRE); 
         ActionSystem.UnsubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction, ReactionTiming.POST);
     }  
@@ -41,7 +44,15 @@ public class CardSystem : Singleton<CardSystem>
         //drawPile.Shuffle();
     }
 
-    //Performers
+    //Performers 
+    private IEnumerator PlayCardPerformer(PlayCardGA playCardGA)
+    {
+        hand.Remove(playCardGA.card); 
+        discardPile.Add(playCardGA.card);
+        ApplyCard applyCard = HandView.Instance.RemoveCard(playCardGA.card);
+        yield return DiscardCard(applyCard); 
+        //TODO: Apply card effects
+    }
     private IEnumerator DrawCardPerformer(DrawCardGA drawCardGA)
     { 
         int cardAmount = Mathf.Min(drawCardGA.Amount, drawPile.Count); 

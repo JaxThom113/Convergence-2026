@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public float moveSpeed = 5f;
-    public Transform movePoint;
-    public LayerMask whatStopsMovement; 
+    [SerializeField] private float moveSpeed = 5f;
+    [SerializeField] private Transform movePoint;
+    [SerializeField] private LayerMask whatStopsMovement; 
 
     void Start()
     {
