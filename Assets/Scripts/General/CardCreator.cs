@@ -4,8 +4,8 @@ using UnityEngine;
 using DG.Tweening;
 public class CardCreator : Singleton<CardCreator>
 { 
-    public Canvas canvas;
-    public ApplyCard applyCardPrefab;
+    [SerializeField] private Canvas canvas;
+    [SerializeField] private ApplyCard applyCardPrefab;
     public ApplyCard CreateCard(Card card, Vector3 position, Quaternion rotation)
     {
         ApplyCard applyCard = Instantiate(applyCardPrefab, canvas.transform); 

@@ -3,12 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 public class CardSystem : Singleton<CardSystem>
-{
-    // Start is called before the first frame update 
-    public CardSO cardSO; 
+{ 
+     //Hold the LOGIC, takes GA's as input for data
     
-    public Transform drawPileTransform;
-    public Transform discardPileTransform;
+
+    /* 
+    DrawCardGA -> DrawCardPerformer -> DrawCard() -> AddCard() -> ApplyCard()
+    DiscardCardGA -> DiscardCardPerformer -> DiscardCard() -> RemoveCard() -> ApplyCard()
+    PlayCardGA -> PlayCardPerformer -> PlayCard() -> RemoveCard() -> ApplyCard()
+    EnemyTurnGA -> EnemyTurnPreReaction -> DiscardCardGA -> AddReaction()
+    EnemyTurnGA -> EnemyTurnPostReaction -> DrawCardGA -> AddReaction()
+    */     
+    
+    // Start is called before the first frame update 
+    [SerializeField] private CardSO cardSO; 
+    
+    [SerializeField] private Transform drawPileTransform;
+    [SerializeField] private Transform discardPileTransform;
    
     
     private List<Card> drawPile = new(); 
@@ -16,19 +27,24 @@ public class CardSystem : Singleton<CardSystem>
     private List<Card> hand = new();   
     // Action System Setup
     private void OnEnable() 
-    { 
+    {  
+        //Attach Performer to add to dictionary so we wont get an error when performperformer/performsubscriber
         ActionSystem.AttachPerformer<DrawCardGA>(DrawCardPerformer);
-        ActionSystem.AttachPerformer<DiscardCardGA>(DiscardCardPerformer); 
-        ActionSystem.SubscribeReaction<EnemyTurnGA>(EnemyTurnPreReaction, ReactionTiming.PRE); 
-        ActionSystem.SubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction, ReactionTiming.POST);
+        ActionSystem.AttachPerformer<DiscardCardGA>(DiscardCardPerformer);  
+        ActionSystem.AttachPerformer<PlayCardGA>(PlayCardPerformer);
+        ActionSystem.SubscribeReaction<EnemyTurnGA>(EnemyTurnPreReaction, ReactionTiming.PRE); //same thing as above, but if prereaction or postreaction we call subscribe reaction instead of attach perfomer
+        ActionSystem.SubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction, ReactionTiming.POST); 
+        
      } 
     private void OnDisable() 
     {  
         UnityEngine.Debug.Log("CardSystem Disabled");
-        ActionSystem.DetachPerformer<DrawCardGA>();
+        ActionSystem.DetachPerformer<DrawCardGA>(); //remove from dictionary so we wont get an error when detaching performer
         ActionSystem.DetachPerformer<DiscardCardGA>(); 
+        ActionSystem.DetachPerformer<PlayCardGA>();
         ActionSystem.UnsubscribeReaction<EnemyTurnGA>(EnemyTurnPreReaction, ReactionTiming.PRE); 
-        ActionSystem.UnsubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction, ReactionTiming.POST);
+        ActionSystem.UnsubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction, ReactionTiming.POST); 
+        //Remove from dictionary so we wont get an error when unsubscribing reaction
     }  
     //Public Methods 
     public void Setup(List<CardSO> cardSOs)  
@@ -41,7 +57,19 @@ public class CardSystem : Singleton<CardSystem>
         //drawPile.Shuffle();
     }
 
-    //Performers
+    //Performers 
+    private IEnumerator PlayCardPerformer(PlayCardGA playCardGA)
+    {
+        hand.Remove(playCardGA.card); 
+        discardPile.Add(playCardGA.card);
+        ApplyCard applyCard = HandView.Instance.RemoveCard(playCardGA.card);
+        yield return DiscardCard(applyCard); 
+       foreach(var effect in playCardGA.card.effects) { 
+            PerformEffectGA performEffectGA = new(effect);
+            ActionSystem.Instance.AddReaction(performEffectGA); //add to subscriber list, since we cant call a perfomer in a performer  
+            //This is protected in the IsPerforming check at the start of the perform method
+       }
+    }
     private IEnumerator DrawCardPerformer(DrawCardGA drawCardGA)
     { 
         int cardAmount = Mathf.Min(drawCardGA.Amount, drawPile.Count); 
