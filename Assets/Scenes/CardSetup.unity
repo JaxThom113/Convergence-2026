@@ -944,6 +944,50 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &628669331
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 628669332}
+  - component: {fileID: 628669333}
+  m_Layer: 0
+  m_Name: EffectSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &628669332
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 628669331}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1673181060}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &628669333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 628669331}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bab33f4f93d13b4aa08c23ae743a9f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &628752092
 GameObject:
   m_ObjectHideFlags: 0
@@ -2407,13 +2451,16 @@ MonoBehaviour:
   cardCountText: {fileID: 1542794316}
   scrollbar: {fileID: 1645784209}
   cards:
+  - {fileID: 11400000, guid: 5aa3e428c818b3640bad561f8fe20a96, type: 2}
+  - {fileID: 11400000, guid: e1e5e027eebb24142a795f29730252e8, type: 2}
+  - {fileID: 11400000, guid: 5aa3e428c818b3640bad561f8fe20a96, type: 2}
   - {fileID: 11400000, guid: e1e5e027eebb24142a795f29730252e8, type: 2}
   - {fileID: 11400000, guid: e1e5e027eebb24142a795f29730252e8, type: 2}
   - {fileID: 11400000, guid: e1e5e027eebb24142a795f29730252e8, type: 2}
+  - {fileID: 11400000, guid: 5aa3e428c818b3640bad561f8fe20a96, type: 2}
   - {fileID: 11400000, guid: e1e5e027eebb24142a795f29730252e8, type: 2}
   - {fileID: 11400000, guid: e1e5e027eebb24142a795f29730252e8, type: 2}
-  - {fileID: 11400000, guid: e1e5e027eebb24142a795f29730252e8, type: 2}
-  - {fileID: 11400000, guid: e1e5e027eebb24142a795f29730252e8, type: 2}
+  - {fileID: 11400000, guid: 5aa3e428c818b3640bad561f8fe20a96, type: 2}
   cardsPerRow: 5
   padding: 90
   lineSpacing: 200
@@ -2896,6 +2943,7 @@ Transform:
   m_Children:
   - {fileID: 1994565958}
   - {fileID: 1428287327}
+  - {fileID: 628669332}
   - {fileID: 1953211992}
   - {fileID: 472054445}
   - {fileID: 1285040820}

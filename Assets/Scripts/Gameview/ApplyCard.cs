@@ -111,7 +111,7 @@ public class ApplyCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         if(transform.localPosition.y > 200f) 
         { 
             PlayCardGA playCardGA = new(card); 
-            ActionSystem.Instance.Perform(playCardGA); 
+            ActionSystem.Instance.Perform(playCardGA);  //action
             Debug.Log("Played card: " + card.cardName);
         } 
         else

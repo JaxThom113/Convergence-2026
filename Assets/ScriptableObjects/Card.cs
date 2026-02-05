@@ -13,7 +13,7 @@ public class Card
     public Sprite cardIcon => data.cardIcon; 
     public Sprite cardTypeIcon => data.cardTypeIcon; 
     public Sprite cardElementIcon => data.cardElementIcon;
-    public List<Actions> actions => data.actions;
+    public List<Effect> effects => data.effects;
     //public Sprite cardTypeIcon => data.cardTypeIcon;
     //public Sprite cardElementIcon => data.cardElementIcon;
     public string cardDescription {get; private set; } 

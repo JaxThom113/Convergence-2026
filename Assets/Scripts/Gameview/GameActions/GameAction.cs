@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class  GameAction  
 
+//GA's simply hold data, no logic
+public abstract class  GameAction  
+//Abstract base class that actionsystem needs in its input
 {
     public List<GameAction> PreReactions { get; private set;} = new();  
 

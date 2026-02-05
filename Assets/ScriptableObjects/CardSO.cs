@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using SerializeReferenceEditor;
 using UnityEngine;
 
 public enum Element 
@@ -26,8 +27,10 @@ public class CardSO : ScriptableObject
     public Sprite cardIcon; 
     public string cardDescription;  
     public Element cardElement;  
-    public Sprite cardElementIcon; 
-    [SerializeReference] public List<Actions> actions; 
+    public Sprite cardElementIcon;  
     public CardType cardType; 
     public Sprite cardTypeIcon;
+    [SerializeReference, SR(typeof(Effect))]
+    public List<Effect> effects = new List<Effect>(); 
+    
 }
