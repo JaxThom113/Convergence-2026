@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Attaction Card", menuName = "Card/Attaction Card")]
 public class AttactionSO : CardSO
 {
-    [SerializeField] private int attackDamage;  
+    //[SerializeField] private int attackDamage;  
     
 
 

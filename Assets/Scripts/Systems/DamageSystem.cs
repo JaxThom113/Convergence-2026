@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
-public class DamageSystem : MonoBehaviour
-{ 
-    [SerializeField] private GameObject knife;  
-    [SerializeField] private Health health;  
+public class DamageSystem : Singleton<DamageSystem>
+{   
+    [SerializeField] public PlayerView playerView;  
+    [SerializeField] public EnemyView enemyView;  
     // Start is called before the first frame update
     private void OnEnable() 
     { 
@@ -17,12 +17,13 @@ public class DamageSystem : MonoBehaviour
         ActionSystem.DetachPerformer<DealDamageGA>();
     }  
     private IEnumerator DealDamagePerformer(DealDamageGA dealDamageGA) { 
-        int damageAmount = dealDamageGA.Amount; 
-        Vector2 knifeStart = knife.transform.position; 
-        Tween tween = knife.transform.DOMove(health.transform.position, 0.25f); 
-        yield return tween.WaitForCompletion(); 
-        knife.transform.DOMove(knifeStart, 0.5f); 
-         health.ReduceHealth(damageAmount); 
+        int damageAmount = dealDamageGA.Amount;  
+        if(dealDamageGA.isPlayer) { 
+            enemyView.ReduceHealth(damageAmount);
+        } else { 
+            playerView.ReduceHealth(damageAmount);
+        }
+        yield return null;
     }
 
    

@@ -13,9 +13,12 @@ public class ActionSystem : Singleton<ActionSystem>
    private static Dictionary<Type, List<Action<GameAction>>> preSubs = new();  
    //When you draw a card, you can have a reaction to the card before being drawn
 
+    //Action<T> is a delegate that returns void 
+    //List that stores methods that take a GameAction as an argument and return void
    private static Dictionary<Type, List<Action<GameAction>>> postSubs = new(); 
    //When you draw a card, you can have a reaction to the card after being drawn
 
+    //NO LIST, one function per type
    private static Dictionary<Type, Func<GameAction, IEnumerator>> performers = new(); // inbetween pre-post subs GA application, generic form
    //Called when an action system is performing an action
 
@@ -154,14 +157,14 @@ Flow is the MAIN METHOD of the action system that orchestrates the execution of 
             yield return Flow(reaction);
         }
    }  
-  
+  //If you only want to perform the type once
    public static void AttachPerformer<T>(Func<T, IEnumerator> performer) where T : GameAction 
    {    
-    //ADDS CARD TO DICTIONARY FROM THE SYSTEM SCRIPT(S) (IE: CardSystem)
+        //ADDS PERFORMER TO DICTIONARY FROM THE SYSTEM SCRIPT(S) (IE: CardSystem)
         //IEnumerator as sometimes we want to wait before action is performed
         //this method does the logic of our game action, and attatches it to the action system 
         Type type = typeof(T);  //first get the type of the game action (different classes have different types)
-        IEnumerator wrappedPerformer(GameAction action) => performer((T)action); //Convert our performer to an IEnumerator so it can be added to the dictionary
+        IEnumerator wrappedPerformer(GameAction action) => performer((T)action); //Convert our performer to an wrappedPerformer so it can be added to the dictionary
         if (performers.ContainsKey(type)) performers[type] = wrappedPerformer; //then simply add it to the dictionary
         else performers.Add(type, wrappedPerformer); 
         
@@ -177,7 +180,8 @@ Flow is the MAIN METHOD of the action system that orchestrates the execution of 
    {  
         //simple function, adds a reaction to the dictionary based on the timing (before or after the action is performed)
         Dictionary<Type, List<Action<GameAction>>> subs = timing == ReactionTiming.PRE ? preSubs : postSubs;  //subscribes based on the timing inputted
-        void wrappedReaction(GameAction action) => reaction((T)action); 
+        void wrappedReaction(GameAction action) => reaction((T)action);  
+        //Defining the function, so reaction((T)action) IE: EnemyTurnPreReaction(EnemyTurnGA) is not being called
         if (subs.ContainsKey(typeof(T))) 
         { 
             subs[typeof(T)].Add(wrappedReaction);

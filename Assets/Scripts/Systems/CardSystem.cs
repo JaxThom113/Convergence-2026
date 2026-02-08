@@ -14,22 +14,26 @@ public class CardSystem : Singleton<CardSystem>
     EnemyTurnGA -> EnemyTurnPreReaction -> DiscardCardGA -> AddReaction()
     EnemyTurnGA -> EnemyTurnPostReaction -> DrawCardGA -> AddReaction()
     */     
-    
+
     // Start is called before the first frame update 
     [SerializeField] private CardSO cardSO; 
     
     [SerializeField] private Transform drawPileTransform;
     [SerializeField] private Transform discardPileTransform;
-   
+    [SerializeField] private Transform enemyHandTransform;
     
     private List<Card> drawPile = new(); 
     private List<Card> discardPile = new();  
-    private List<Card> hand = new();   
+    private List<Card> hand = new();    
+    public List<Card> enemyDeck = new();  
+
+    
     // Action System Setup
     private void OnEnable() 
     {  
         //Attach Performer to add to dictionary so we wont get an error when performperformer/performsubscriber
         ActionSystem.AttachPerformer<DrawCardGA>(DrawCardPerformer);
+        ActionSystem.AttachPerformer<DrawEnemyCardGA>(DrawEnemyCardPerformer);
         ActionSystem.AttachPerformer<DiscardCardGA>(DiscardCardPerformer);  
         ActionSystem.AttachPerformer<PlayCardGA>(PlayCardPerformer);
         ActionSystem.SubscribeReaction<EnemyTurnGA>(EnemyTurnPreReaction, ReactionTiming.PRE); //same thing as above, but if prereaction or postreaction we call subscribe reaction instead of attach perfomer
@@ -40,6 +44,7 @@ public class CardSystem : Singleton<CardSystem>
     {  
         UnityEngine.Debug.Log("CardSystem Disabled");
         ActionSystem.DetachPerformer<DrawCardGA>(); //remove from dictionary so we wont get an error when detaching performer
+        ActionSystem.DetachPerformer<DrawEnemyCardGA>();
         ActionSystem.DetachPerformer<DiscardCardGA>(); 
         ActionSystem.DetachPerformer<PlayCardGA>();
         ActionSystem.UnsubscribeReaction<EnemyTurnGA>(EnemyTurnPreReaction, ReactionTiming.PRE); 
@@ -47,28 +52,45 @@ public class CardSystem : Singleton<CardSystem>
         //Remove from dictionary so we wont get an error when unsubscribing reaction
     }  
     //Public Methods 
-    public void Setup(List<CardSO> cardSOs)  
-    { 
+    public void Setup(List<CardSO> cardSOs, List<CardSOList> enemyCardSOs)  
+    {  
         foreach(var cardSO in cardSOs) {  
             Card card = new Card(cardSO);
             drawPile.Add(card);
-          
+        } 
+        List<CardSO> enemyHand = EnemySystem.Instance.GetCurrentEnemyHand();
+        foreach(var cardSO in enemyHand) {  
+            Card card = new Card(cardSO);
+            enemyDeck.Add(card);
         }
-        //drawPile.Shuffle();
+    } 
+    private void SetupEnemyDeck(List<CardSOList> enemyCardSOs){ 
+        List<CardSO> enemyHand = EnemySystem.Instance.GetCurrentEnemyHand();
+        foreach(var cardSO in enemyHand) {  
+            Card card = new Card(cardSO);
+            enemyDeck.Add(card);
+        }
     }
 
     //Performers 
     private IEnumerator PlayCardPerformer(PlayCardGA playCardGA)
-    {
+    { 
+        
         hand.Remove(playCardGA.card); 
         discardPile.Add(playCardGA.card);
         ApplyCard applyCard = HandView.Instance.RemoveCard(playCardGA.card);
-        yield return DiscardCard(applyCard); 
-       foreach(var effect in playCardGA.card.effects) { 
-            PerformEffectGA performEffectGA = new(effect);
-            ActionSystem.Instance.AddReaction(performEffectGA); //add to subscriber list, since we cant call a perfomer in a performer  
-            //This is protected in the IsPerforming check at the start of the perform method
-       }
+        yield return DiscardCard(applyCard);  
+
+        //ManaSystem.Instance.SpendMana(playCardGA.card.cardCost);  
+        //DONT SPEND MANA DIRECLTY! add it to que in the action system to avoid any bugs
+        SpendManaGA spendManaGA = new(manaAmount: playCardGA.card.cardCost); 
+        ActionSystem.Instance.AddReaction(spendManaGA); 
+        foreach(var effect in playCardGA.card.effects) { 
+                effect.isPlayer = true;
+                PerformEffectGA performEffectGA = new(effect);
+                ActionSystem.Instance.AddReaction(performEffectGA); //add to subscriber list, since we cant call a perfomer in a performer  
+                //This is protected in the IsPerforming check at the start of the perform method
+        }
     }
     private IEnumerator DrawCardPerformer(DrawCardGA drawCardGA)
     { 
@@ -84,8 +106,18 @@ public class CardSystem : Singleton<CardSystem>
                 yield return DrawCard();
             }
         }
-        Card card = new Card(cardSO);  
+        //Card card = new Card(cardSO);  
     } 
+    private IEnumerator DrawEnemyCardPerformer(DrawEnemyCardGA drawEnemyCardGA)
+    {  
+        Debug.Log("Drawing Enemy Cards: " + EnemySystem.Instance.GetDrawAmount());
+        int cardAmount = Mathf.Min(drawEnemyCardGA.Amount, EnemySystem.Instance.GetDrawAmount()); 
+        int notDrawnAmount = drawEnemyCardGA.Amount - cardAmount; 
+        for(int i = 0; i < cardAmount; i++) { 
+            yield return DrawEnemyCard();
+        }
+    } 
+
     private IEnumerator DiscardCardPerformer(DiscardCardGA discardCardGA)
     { 
         foreach(var card in hand) { 
@@ -103,18 +135,33 @@ public class CardSystem : Singleton<CardSystem>
 
     } 
     private void EnemyTurnPostReaction(EnemyTurnGA enemyTurnGA) 
-    {  
+    {   
+        
+        SetupEnemyDeck(EnemySystem.Instance.enemy.enemyDeck);
         DrawCardGA drawCardGA = new(5); 
-        ActionSystem.Instance.AddReaction(drawCardGA);
+        ActionSystem.Instance.AddReaction(drawCardGA);  
+        DrawEnemyCardGA drawEnemyCardGA = new(EnemySystem.Instance.GetDrawAmount()); 
+        ActionSystem.Instance.AddReaction(drawEnemyCardGA); 
+        // RefillManaGA refillManaGA = new(ManaSystem.Instance.maxMana);  
+        // ActionSystem.Instance.AddReaction(refillManaGA); 
+       
     }
     //Helper Methods
     private IEnumerator DrawCard() 
     { 
         Card card = drawPile.Draw(); 
         hand.Add(card);
-        ApplyCard applyCard = CardCreator.Instance.CreateCard(card, drawPileTransform.position, drawPileTransform.rotation);                   
+        ApplyCard applyCard = CardCreator.Instance.CreateCard(card, drawPileTransform.position, drawPileTransform.rotation, false);                   
         yield return  StartCoroutine(HandView.Instance.AddCard(applyCard));
-    }  
+    } 
+    private IEnumerator DrawEnemyCard() 
+    { 
+        Card card = enemyDeck.Draw(); 
+        enemyDeck.Add(card);
+        ApplyCard applyCard = CardCreator.Instance.CreateCard(card, enemyHandTransform.position, enemyHandTransform.rotation, true);                   
+        yield return  StartCoroutine(EnemyHandView.Instance.AddCard(applyCard));
+    }
+
     private void RefillDeck() 
     { 
         drawPile.AddRange(discardPile);
