@@ -6,9 +6,14 @@ public class ManaUI : MonoBehaviour
 { 
     [SerializeField] public TextMeshProUGUI manaText;
     // Start is called before the first frame update
-    void Start()
+    public void UpdateManaText(int manaAmount)
     {
-        
+        manaText.text = manaAmount.ToString();
+    } 
+    void Update(){ 
+        if(ManaSystem.Instance != null) {
+            Debug.Log("ManaSystem.Instance: ONLINE");
+        }
     }
 
 }

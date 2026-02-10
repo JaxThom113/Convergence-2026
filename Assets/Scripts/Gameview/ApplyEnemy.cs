@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class ApplyEnemy : MonoBehaviour
 { 
-    [SerializeField] private Enemy enemy;  
-    [SerializeField] private Sprite enemyIcon;   
-    void Setup(Enemy enemy) { 
-        this.enemy = enemy; 
-        enemyIcon = enemy.enemyIcon; 
-        gameObject.name = enemy.enemyName; 
-    }
+    // [SerializeField] private Enemy enemy;  
+    // [SerializeField] private Sprite enemyIcon;   
+    // void Setup(Enemy enemy) { 
+    //     this.enemy = enemy; 
+    //     enemyIcon = enemy.enemyIcon; 
+    //     gameObject.name = enemy.enemyName; 
+    // }
 }

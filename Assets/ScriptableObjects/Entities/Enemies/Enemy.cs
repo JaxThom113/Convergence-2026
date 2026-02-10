@@ -1,0 +1,14 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Enemy : Entity
+{
+    public List<CardSOList> enemyDeck = new List<CardSOList>();
+
+    public void Setup(EnemySO dataSO)
+    {
+        SetupBase(dataSO);
+        enemyDeck = dataSO.enemyDeck;
+    }
+}

@@ -33,7 +33,11 @@ public class Inventory : Singleton<Inventory>
     private List<Vector2> cardBasePositions = new List<Vector2>(); // Store original card positions
     private bool displayed = false;
     public void AddCard(CardSO card) => cards.Add(card); 
-    public int GetCardCount() => cards.Count;  
+    public int GetCardCount() => cards.Count; 
+    public void Setup(List<CardSO> cards)
+    {
+        this.cards = cards;
+    }
  
     public void ToggleCards() { 
         if(displayed) {
@@ -95,8 +99,11 @@ public class Inventory : Singleton<Inventory>
             else{ 
                     cardObject.transform.localPosition = cardPosition;
             }
-            
-            cardObject.GetComponent<ApplyCard>().card = new Card(card);  
+            Card newCard = new Card(card);  
+            ApplyCard applyCard = cardObject.GetComponent<ApplyCard>();
+            applyCard.InventoryCard = true;
+            applyCard.Setup(newCard); 
+              
             // Debug.Log("Card added: " + card.cardName);
         }
         

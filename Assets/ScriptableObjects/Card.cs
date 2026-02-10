@@ -21,7 +21,7 @@ public class Card
     public Element cardElement {get; private set; } 
     public CardType cardType {get; private set; } 
 
-    private CardSO data;
+    public CardSO data;
     public Card(CardSO dataSO) { 
         data = dataSO;
         cardDescription = dataSO.cardDescription;  

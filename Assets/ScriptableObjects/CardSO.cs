@@ -21,16 +21,17 @@ public enum CardType
 
 public class CardSO : ScriptableObject
 {
-    public string cardName; 
-    public int cardCost; 
-    public Sprite cardBorder; 
-    public Sprite cardIcon; 
-    public string cardDescription;  
-    public Element cardElement;  
-    public Sprite cardElementIcon;  
-    public CardType cardType; 
-    public Sprite cardTypeIcon;
+    [SerializeField] public string cardName; 
+    [SerializeField] public int cardCost; 
+    [SerializeField] public Sprite cardBorder; 
+    [SerializeField] public Sprite cardIcon; 
+    [SerializeField] public string cardDescription;  
+    [SerializeField] public Element cardElement;  
+    [SerializeField] public Sprite cardElementIcon;  
+    [SerializeField] public CardType cardType; 
+    [SerializeField] public Sprite cardTypeIcon;
     [SerializeReference, SR(typeof(Effect))]
-    public List<Effect> effects = new List<Effect>(); 
+    [SerializeField] public List<Effect> effects = new List<Effect>();  
+    
     
 }

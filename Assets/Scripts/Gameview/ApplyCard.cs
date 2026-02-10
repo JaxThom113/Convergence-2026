@@ -28,11 +28,15 @@ public class ApplyCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
     private bool tweening = true;
     private Vector3 initialPosition;
-    private Quaternion initialRotation;
+    private Quaternion initialRotation; 
+
+    public bool InventoryCard = false;
     //ALL TYPES MUST BE THE SAME
     // Start is called before the first frame update
     public void Setup(Card card)
-    { 
+    {  
+        if(card == null) return; 
+      
         this.card = card; 
         cardBorder.GetComponent<Image>().sprite = card.cardBorder; 
         cardIcon.GetComponent<Image>().sprite = card.cardIcon; 
@@ -57,7 +61,7 @@ public class ApplyCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     }
     void Start()
     {
-      
+        // Removed test call - use ManaSystem.Instance when needed (e.g. OnPointerUp)
     }
 
     // Update is called once per frame
@@ -68,6 +72,7 @@ public class ApplyCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     // UI Event System - works for UI objects (Image, Button, etc.)
     public void OnPointerEnter(PointerEventData eventData)
     {  
+        if(InventoryCard) return;
         //if(tweening) return;
         if(!Interactions.Instance.PlayerCanHover()) return;
         wrapper.SetActive(false);
@@ -77,6 +82,7 @@ public class ApplyCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     } 
     public void OnPointerDown(PointerEventData eventData)
     {
+        if(InventoryCard) return;
         if (!Interactions.Instance.PlayerCanInteract()) return;
 
         Interactions.Instance.PlayerIsDragging = true;
@@ -91,6 +97,7 @@ public class ApplyCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
     public void OnDrag(PointerEventData eventData)
     {
+        if(InventoryCard) return;
         if (!Interactions.Instance.PlayerIsDragging) return;
 
         Vector3 worldPoint; 
@@ -103,13 +110,14 @@ public class ApplyCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         {
             transform.position = new Vector3(worldPoint.x, worldPoint.y, worldPoint.z - 0.1f);
         }
-    }
+    } 
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        
-        if(transform.localPosition.y > 200f) 
-        { 
+        if(InventoryCard) return;
+        if( transform.localPosition.y > 200f && ManaSystem.Instance.HasEnoughMana(card.cardCost)) 
+        {  
+           
             PlayCardGA playCardGA = new(card); 
             ActionSystem.Instance.Perform(playCardGA);  //action
             Debug.Log("Played card: " + card.cardName);
@@ -124,6 +132,7 @@ public class ApplyCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     
     public void OnPointerExit(PointerEventData eventData)
     {
+        if(InventoryCard) return;
        //if(tweening) return;
         if(!Interactions.Instance.PlayerCanHover()) return;
         wrapper.SetActive(true);

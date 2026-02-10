@@ -5,8 +5,9 @@ using UnityEngine;
 public class DealDamageGA : GameAction
 {
     public int Amount; 
-
-    public DealDamageGA(int amount) { 
+    public bool isPlayer;
+    public DealDamageGA(int amount, bool isPlayer) { 
         Amount = amount;
+        this.isPlayer = isPlayer;
     }
 }
