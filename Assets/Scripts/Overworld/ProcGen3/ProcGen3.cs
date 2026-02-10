@@ -6,24 +6,11 @@ using UnityEngine.Tilemaps;
 
 /*
 
-ALGORITHM DESCRIPTION
-
-This maze generation algorithm uses a combination of Flood Fill (DFS) maze generation, A* pathfinding,
-and reucursion to dynamically create new dungeons as the player progresses through the game. 
-
-Procedure:
-1) DFS is used to create maze (0 = floor, 1 = wall)
-2) Random start/end points are picked at the bottom/top of the grid to create a path through maze
-3) A* pathfinding is used to find the optimal path
-4) Maze floor tiles separated (2 = correct path, 3 = extra path)
-5) Large amount of enemies are placed along correct path
-6) Loot is spawned on areas furthest from main path
-7) Additional enemies spawned to protect loot
-8) Player is placed in start cell, and game begins
+3D version of ProcGen2
 
 */
 
-public class ProcGen2 : MonoBehaviour
+public class ProcGen3 : MonoBehaviour
 {
     [Header("Generation Settings")]
     [Range(0, 1000)]
@@ -45,6 +32,10 @@ public class ProcGen2 : MonoBehaviour
     public GameObject enemy;
     public GameObject chest;
 
+    [Header("3D Elements")]
+    public GameObject wallCube; 
+    public GameObject edgeCube; 
+
     // 0 = floor, 1 = wall, 2 = correct path
     private List<List<int>> grid = new List<List<int>>();
     private List<int> bottomEdge;
@@ -54,6 +45,9 @@ public class ProcGen2 : MonoBehaviour
     private const int gridSize = 15;
     private Vector2Int start = new Vector2Int(0, 0);
     private Vector2Int end = new Vector2Int(0, gridSize - 1);
+
+    // 3D elements
+    private GameObject wallsContainer;
 
     void Start()
     {
@@ -213,6 +207,15 @@ public class ProcGen2 : MonoBehaviour
 
     void DrawGrid()
     {
+        // Destroy old cubes before generating new level
+        if (wallsContainer != null)
+        {
+            Destroy(wallsContainer);
+        }
+        
+        // Create new container
+        wallsContainer = new GameObject("WallsContainer");
+
         Vector3Int playerPos = new Vector3Int(0, 0, 0);
 
         // take the values from the grid array and draw them to the tilegrid
@@ -235,6 +238,10 @@ public class ProcGen2 : MonoBehaviour
                 {
                     topEdgePos.y = y;
                     edgeTilemap.SetTile(topEdgePos, edgeTile);
+
+                    Vector3 cubePos = edgeTilemap.GetCellCenterWorld(topEdgePos);
+                    cubePos.z = -0.5f;
+                    Instantiate(edgeCube, cubePos, Quaternion.identity, wallsContainer.transform);
                 }
             }
 
@@ -258,6 +265,10 @@ public class ProcGen2 : MonoBehaviour
                 {
                     bottomEdgePos.y = y;
                     edgeTilemap.SetTile(bottomEdgePos, edgeTile);
+
+                    Vector3 cubePos = edgeTilemap.GetCellCenterWorld(bottomEdgePos);
+                    cubePos.z = -0.5f;
+                    Instantiate(edgeCube, cubePos, Quaternion.identity, wallsContainer.transform);
                 }
             }
 
@@ -276,6 +287,11 @@ public class ProcGen2 : MonoBehaviour
                 else
                 {
                     wallTilemap.SetTile(pos, wallTile);
+
+                    // add 3D cube on top of wall tiles
+                    Vector3 cubePos = wallTilemap.GetCellCenterWorld(pos);
+                    cubePos.z = -0.5f;
+                    Instantiate(wallCube, cubePos, Quaternion.identity, wallsContainer.transform);
                 }
 
                 if (grid[x][y] == 2)
