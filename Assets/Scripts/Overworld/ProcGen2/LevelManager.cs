@@ -7,10 +7,8 @@ using System;
 using TMPro;
 using Unity.VisualScripting;
 
-public class LevelManager : MonoBehaviour
+public class LevelManager : Singleton<LevelManager>
 {
-    public static LevelManager Instance { get; private set; }
-
     [Header("Transition Screen")]
     public GameObject transitionScreen;
 
@@ -25,20 +23,6 @@ public class LevelManager : MonoBehaviour
     // current leve and area
     private int currentLevel;
     private int currentArea;
-
-    void Awake()
-    {
-        // singleton pattern to ensure only one LevelManager exists
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
 
     void Start()
     {
