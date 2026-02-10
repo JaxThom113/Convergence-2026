@@ -4,7 +4,7 @@ using UnityEngine;
 using DG.Tweening;
 public class CardViewHoverSystem : Singleton<CardViewHoverSystem>
 { 
-    public ApplyCard ApplyCardHover;
+    [SerializeField] private ApplyCard ApplyCardHover;
     // Start is called before the first frame update
     public void Show(Card card, Vector3 position)
     {

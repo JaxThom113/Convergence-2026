@@ -6,10 +6,10 @@ using TMPro;
 public class Inventory : Singleton<Inventory>
 {   
     [Header("References")]
-    public GameObject cardPrefab;  
-    public GameObject inventoryContainer;  
-    public TextMeshProUGUI cardCountText; 
-    public Scrollbar scrollbar;
+    [SerializeField] private GameObject cardPrefab;  
+    [SerializeField] private GameObject inventoryContainer;  
+    [SerializeField] private TextMeshProUGUI cardCountText; 
+    [SerializeField] private Scrollbar scrollbar;
     private Canvas canvas;  
     private float containerH; 
     private float containerW;  
@@ -20,12 +20,12 @@ public class Inventory : Singleton<Inventory>
 
     [Header("Settings")]
     public List<CardSO> cards = new List<CardSO>(); 
-    public int cardsPerRow = 5;  
-    public float padding = 90; 
-    public float lineSpacing = 200;
+    [SerializeField] private int cardsPerRow = 5;  
+    [SerializeField] private float padding = 90; 
+    [SerializeField] private float lineSpacing = 200;
 
     [Header("Scroll Settings")]
-    public float scrollSpeed = 300f;
+    [SerializeField] private float scrollSpeed = 300f;
     private float currentScrollY = 0f;
     private float minScrollY = 0f;
     private float maxScrollY = 0f;

@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class TestSystem : MonoBehaviour
 {
-    public List<CardSO> cardSOs; 
-    private void Start(){ 
-        CardSystem.Instance.Setup(cardSOs);
+    [SerializeField] public List<CardSO> cardSOs; 
+    private void Update(){  
+        if (Input.GetKeyDown(KeyCode.Space)){
+            CardSystem.Instance.Setup(cardSOs); 
+        }
     }
 }
