@@ -11,8 +11,10 @@ public class MatchSetupSystem : MonoBehaviour
     [SerializeField] public EnemyView enemyView;
     private void Start(){   
         SetupEntities();
-        SetupCards();
+        SetupCards(); 
+
     }  
+ 
     private void SetupEntities(){ 
         PlayerSystem.Instance.Setup(playerData); 
         EnemySystem.Instance.Setup(enemyData);  

@@ -151,7 +151,9 @@ public class CardSystem : Singleton<CardSystem>
     { 
         Card card = drawPile.Draw(); 
         hand.Add(card);
-        ApplyCard applyCard = CardCreator.Instance.CreateCard(card, drawPileTransform.position, drawPileTransform.rotation, false);                   
+        ApplyCard applyCard = CardCreator.Instance.CreateCard(card, drawPileTransform.position, drawPileTransform.rotation, false);    
+        //HandView.OnHandUpdated.Invoke(applyCard);         
+
         yield return  StartCoroutine(HandView.Instance.AddCard(applyCard));
     } 
     private IEnumerator DrawEnemyCard() 

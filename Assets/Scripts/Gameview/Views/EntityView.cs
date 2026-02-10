@@ -19,7 +19,9 @@ public class EntityView : MonoBehaviour
       spriteRenderer.sprite = entityData.entityIcon;
     } 
     private void UpdateHealthText() { 
-        healthText.text = $"{currentHealth}/{maxHealth}";
+        if(healthText != null) { 
+             healthText.text = $"{currentHealth}/{maxHealth}"; 
+        }
     }
     public void ReduceHealth(int amount) { 
         currentHealth -= amount;

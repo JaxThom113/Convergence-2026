@@ -3,14 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine; 
 using DG.Tweening;
-using UnityEngine.Splines;
+using UnityEngine.Splines; 
+using UnityEngine.Events;
 
 public class HandView : Singleton<HandView>
 {
     [SerializeField] private SplineContainer splineContainer; 
     public float duration = 0.5f;  
     private List<ApplyCard> cards = new();  
-    public bool IsTweening {get; set;} = false;
+    public bool IsTweening {get; set;} = false;  
+    //public static UnityEvent<ApplyCard> OnHandUpdated = new UnityEvent<ApplyCard>();
+
+    // private void Awake() { 
+    //    //OnHandUpdated.AddListener(AddCardHelper); 
+        
+    // } 
+    public void AddCardHelper(ApplyCard card) { 
+        StartCoroutine(AddCard(card)); 
+    }
     public IEnumerator AddCard(ApplyCard card)
     {
         cards.Add(card);
