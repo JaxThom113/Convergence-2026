@@ -4,7 +4,7 @@ using UnityEngine;
 
 using DG.Tweening;
 
-public class PlayerMovement2 : MonoBehaviour
+public class PlayerMovement3 : MonoBehaviour
 {
     [Header("Player Settings")]
     public float moveSpeed = 5f;
