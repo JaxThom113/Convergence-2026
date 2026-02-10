@@ -42,8 +42,8 @@ public class ProcGen2 : MonoBehaviour
 
     [Header("Entity References")]
     public GameObject player;
-    public GameObject enemy;
-    public GameObject chest;
+    public GameObject enemy;    
+    public GameObject interactable;
 
     // 0 = floor, 1 = wall, 2 = correct path
     private List<List<int>> grid = new List<List<int>>();
@@ -54,6 +54,11 @@ public class ProcGen2 : MonoBehaviour
     private const int gridSize = 15;
     private Vector2Int start = new Vector2Int(0, 0);
     private Vector2Int end = new Vector2Int(0, gridSize - 1);
+    private List<Vector2Int> correctPath;
+
+    // containers
+    private GameObject enemyContainer;
+    private GameObject interactableContainer;
 
     void Start()
     {
@@ -194,6 +199,7 @@ public class ProcGen2 : MonoBehaviour
     void GeneratePath()
     {
         List<Vector2Int> path = AStar.AStarFindPath(grid, gridSize, start, end);
+        correctPath = path;
 
         if (path != null && path.Count > 0)
         {
@@ -295,18 +301,33 @@ public class ProcGen2 : MonoBehaviour
 
     void SpawnEnemiesAlongPath()
     {
+        // destroy old enemies
+        if (enemyContainer != null)
+        {
+            Destroy(enemyContainer);
+        }
+        enemyContainer = new GameObject("EnemyContainer"); // recreate container
+
         // have one enemy spawn for each unit of distance along the intended path
+        int step = 5;
 
-
+        for (int i = step; i < correctPath.Count; i += step)
+        {
+            Vector3Int gridPos = new Vector3Int(correctPath[i].x, correctPath[i].y, 0);
+            //grid[correctPath[i].x][correctPath[i].y] = 2;
+            Vector3 pos = floorTilemap.GetCellCenterWorld(gridPos);
+            Vector3 offsetPos = new Vector3(pos.x - 0.5f, pos.y - 0.5f, 0);
+            Instantiate(enemy, offsetPos, Quaternion.identity, enemyContainer.transform);
+        }
     }
 
     void SpawnLootDeadEnds()
     {
-
+        // search through maze matrix and look for dead ends to place loot
     }
 
     void SpawnEnemiesBranchingPaths()
     {
-
+        // place enemies in front of high-priority loot
     }
 }
