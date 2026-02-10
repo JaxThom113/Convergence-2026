@@ -7097,6 +7097,11 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!1 &1067692784 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7871526490275089156, guid: ea2795ea952f6554c91a71f068f88af8, type: 3}
+  m_PrefabInstance: {fileID: 579214425622824452}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1083042829
 GameObject:
   m_ObjectHideFlags: 0
@@ -13880,11 +13885,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1664173813}
   m_CullTransparentMesh: 1
---- !u!1 &1696354090 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2931104717669823275, guid: 8430b269c42091b4ebfc507c3341db3d, type: 3}
-  m_PrefabInstance: {fileID: 1822015279820855829}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1833073732
 GameObject:
   m_ObjectHideFlags: 0
@@ -13974,7 +13974,7 @@ MonoBehaviour:
   floorTile: {fileID: 11400000, guid: a53667fd0dabe0b45a35f2426e2372c1, type: 2}
   highlightFloorTile: {fileID: 11400000, guid: 7c5373c9fba04b14faa5ac60b4e033f2, type: 2}
   player: {fileID: 1544774759}
-  enemy: {fileID: 1696354090}
+  enemy: {fileID: 1067692784}
   interactable: {fileID: 1266798562}
 --- !u!1 &1921321516
 GameObject:
@@ -14162,26 +14162,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 727192191687868583, guid: ea2795ea952f6554c91a71f068f88af8, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 727192191687868583, guid: ea2795ea952f6554c91a71f068f88af8, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 727192191687868583, guid: ea2795ea952f6554c91a71f068f88af8, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 727192191687868583, guid: ea2795ea952f6554c91a71f068f88af8, type: 3}
-      propertyPath: m_ConstrainProportionsScale
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 831415026202428803, guid: ea2795ea952f6554c91a71f068f88af8, type: 3}
-      propertyPath: m_SortingOrder
-      value: 10
-      objectReference: {fileID: 0}
     - target: {fileID: 2743673131773519464, guid: ea2795ea952f6554c91a71f068f88af8, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.09
@@ -14226,10 +14206,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: OverWorldEnemy
       objectReference: {fileID: 0}
-    - target: {fileID: 9094116283464017541, guid: ea2795ea952f6554c91a71f068f88af8, type: 3}
-      propertyPath: healthText
-      value: 
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -14240,7 +14216,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 9094116283464017541, guid: ea2795ea952f6554c91a71f068f88af8, type: 3}
   m_PrefabInstance: {fileID: 579214425622824452}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1067692784}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 42949c39dedf8f4489b339bab8d98bbc, type: 3}
