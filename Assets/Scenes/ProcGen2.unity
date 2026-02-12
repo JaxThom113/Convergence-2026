@@ -4402,8 +4402,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 422263696}
+  - component: {fileID: 422263697}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: OverworldSceneManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4424,6 +4425,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &422263697
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 422263695}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d36cbb1c0b40a44499590c8dbc2e1896, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  transitionScreen: {fileID: 965387705}
+  playerMovement: {fileID: 1544774762}
 --- !u!1 &867149563
 GameObject:
   m_ObjectHideFlags: 0
@@ -14210,6 +14225,7 @@ SceneRoots:
   - {fileID: 1083042831}
   - {fileID: 1663082423}
   - {fileID: 965387707}
+  - {fileID: 422263696}
   - {fileID: 867149565}
   - {fileID: 1876621068}
   - {fileID: 8763609481031234931}
@@ -14217,4 +14233,3 @@ SceneRoots:
   - {fileID: 8022489002327834375}
   - {fileID: 377801167}
   - {fileID: 93227321}
-  - {fileID: 422263696}

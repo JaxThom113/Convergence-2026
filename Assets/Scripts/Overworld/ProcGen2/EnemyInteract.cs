@@ -8,7 +8,8 @@ public class EnemyInteract : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log("Player collided with enemy");
+            //Debug.Log("Player collided with enemy");
+            OverworldSceneManager.Instance.GoToBattleScreen();
         }
     }
 }

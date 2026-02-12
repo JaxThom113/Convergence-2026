@@ -5,13 +5,18 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
 
-public class SceneManager : Singleton<SceneManager>
+public class OverworldSceneManager : Singleton<OverworldSceneManager>
 {
     [Header("Transition Screen")]
     public GameObject transitionScreen;
 
     [Header("Script References")]
     public PlayerMovement2 playerMovement;
+
+    public void GoToBattleScreen()
+    {
+        StartCoroutine(BattleScreenTransition());
+    }
 
     IEnumerator BattleScreenTransition()
     {
@@ -26,7 +31,7 @@ public class SceneManager : Singleton<SceneManager>
         yield return new WaitForSeconds(1f);
 
         // generate new level
-        // SceneManager.LoadScene("CardSetup");
+        SceneManager.LoadScene("BattleScene");
 
         // transition swipe out and reset position
         transitionScreen.transform.DOMoveY(40, 0.5f).SetEase(Ease.OutCubic);
@@ -34,15 +39,10 @@ public class SceneManager : Singleton<SceneManager>
         transitionScreen.SetActive(false);
         transitionScreen.transform.position = new Vector3(0, -40, 0);
 
-        // tp player to bottom of the screen, have player move upward to starting cell
-        playerMovement.TeleportToBottom();
-        playerMovement.ContinueUp();
-
         // return control to the player  
         playerMovement.enabled = true;
+
         Debug.Log("Battle scene transition complete");
-
-
 
         yield return null;
     }
