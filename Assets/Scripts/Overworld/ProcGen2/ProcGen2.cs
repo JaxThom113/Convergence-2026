@@ -45,8 +45,17 @@ public class ProcGen2 : MonoBehaviour
     public GameObject enemy;    
     public GameObject interactable;
 
-    // 0 = floor, 1 = wall, 2 = correct path
+    /*
+        Grid matrix
+            0 = floor
+            1 = wall
+            2 = correct path
+            3 = enemy
+            4 = interactable
+    */
     private List<List<int>> grid = new List<List<int>>();
+
+    // top/bottom edges
     private List<int> bottomEdge;
     private List<int> topEdge;
 
@@ -55,8 +64,9 @@ public class ProcGen2 : MonoBehaviour
     private Vector2Int start = new Vector2Int(0, 0);
     private Vector2Int end = new Vector2Int(0, gridSize - 1);
     private List<Vector2Int> correctPath;
+    private List<Vector2Int> deadEnds;
 
-    // containers
+    // containers for enemy/interactable prefabs
     private GameObject enemyContainer;
     private GameObject interactableContainer;
 
@@ -82,9 +92,13 @@ public class ProcGen2 : MonoBehaviour
         {
             for (int x = 0; x < gridSize; x++)
             {
-                if (grid[x][y] == 2)
+                // add squares to a textbox to make the grid visible in inspector
+                if (grid[x][y] == 4)
+                    gridDebug += "▤ ";
+                else if (grid[x][y] == 3)
+                    gridDebug += "▧ ";
+                else if (grid[x][y] == 2)
                     gridDebug += "▣ ";
-
                 else if (grid[x][y] == 1)
                     gridDebug += "□ ";
                 else
@@ -124,6 +138,7 @@ public class ProcGen2 : MonoBehaviour
         // Step #8: Place enemies in front of loot / in branching paths
         SpawnEnemiesBranchingPaths();
 
+        UpdateGridDebug();
     }
 
     /*
@@ -295,8 +310,6 @@ public class ProcGen2 : MonoBehaviour
 
             }
         }
-
-        UpdateGridDebug();
     }
 
     void SpawnEnemiesAlongPath()
@@ -309,25 +322,92 @@ public class ProcGen2 : MonoBehaviour
         enemyContainer = new GameObject("EnemyContainer"); // recreate container
 
         // have one enemy spawn for each unit of distance along the intended path
-        int step = 5;
+        int step = Random.Range(8, 16);
 
         for (int i = step; i < correctPath.Count; i += step)
         {
+            step = Random.Range(8, 16);
+            grid[correctPath[i].x][correctPath[i].y] = 3;
+
             Vector3Int gridPos = new Vector3Int(correctPath[i].x, correctPath[i].y, 0);
-            //grid[correctPath[i].x][correctPath[i].y] = 2;
             Vector3 pos = floorTilemap.GetCellCenterWorld(gridPos);
-            Vector3 offsetPos = new Vector3(pos.x - 0.5f, pos.y - 0.5f, 0);
+            Vector3 offsetPos = new Vector3(pos.x, pos.y, 0);
+
             Instantiate(enemy, offsetPos, Quaternion.identity, enemyContainer.transform);
         }
     }
 
     void SpawnLootDeadEnds()
     {
+        if (interactableContainer != null)
+        {
+            Destroy(interactableContainer);
+        }
+        interactableContainer = new GameObject("InteractableContainer"); // recreate container
+
+        int[] dy = { -1, 1, 0, 0 }; // up, down
+        int[] dx = { 0, 0, -1, 1 }; // left, right
+
         // search through maze matrix and look for dead ends to place loot
+        for (int y = 0; y < gridSize; y++)
+        {
+            for (int x = 0; x < gridSize; x++)
+            {
+                // ignore cells with walls, the correct path, and enemies
+                if (grid[y][x] == 1 || grid[y][x] == 2 || grid[y][x] == 3)
+                    continue;
+                
+                // up, down, left, right
+                List<int> neighbors = new List<int>();
+
+                // check the adjacent cells
+                for (int i = 0; i < 4; i++)
+                {
+                    int ny = y + dy[i];
+                    int nx = x + dx[i];
+
+                    // bounds check to avoid errors
+                    if (ny >= 0 && ny < gridSize && nx >= 0 && nx < gridSize)
+                    {
+                        neighbors.Add(grid[ny][nx]);
+                    }
+                }
+
+                // if a 2 is in neighbors, ignore putting loot on this cell
+                if (neighbors.Contains(2) || neighbors.Contains(3))
+                    continue;
+
+                // if there is one 0 and three 1s, this cell is a dead end, so add loot
+                int zeros = 0, ones = 0;
+                foreach (int n in neighbors)
+                {
+                    if (n == 0) 
+                        zeros++;
+                    else if (n == 1) 
+                        ones++;
+                }
+
+                if (zeros == 1 && ones == 3)
+                {
+                    grid[y][x] = 4; // add a 4 to represent this interactable instance
+
+                    Vector3Int gridPos = new Vector3Int(y, x, 0);
+                    Vector3 pos = floorTilemap.GetCellCenterWorld(gridPos);
+                    Vector3 offsetPos = new Vector3(pos.x - 0.5f, pos.y - 0.5f, 0);
+
+                    Instantiate(interactable, offsetPos, Quaternion.identity, interactableContainer.transform);
+                    
+                    //deadEnds.Add(new Vector2Int(gridPos.x, gridPos.y));
+                }
+            }
+        }
     }
 
     void SpawnEnemiesBranchingPaths()
     {
         // place enemies in front of high-priority loot
+        int step = Random.Range(8, 16);
+
+        // place enemies randomly on branching paths
     }
 }
