@@ -7,7 +7,6 @@ using UnityEngine.UI;
 public class EntityView : MonoBehaviour
 {
     [SerializeField] public TMP_Text healthText; 
-    [SerializeField] public SpriteRenderer spriteRenderer; 
 
     public int maxHealth;
     public int currentHealth; 
@@ -16,7 +15,6 @@ public class EntityView : MonoBehaviour
     { 
       maxHealth = currentHealth = entityData.entityHealth;    
       UpdateHealthText();
-      spriteRenderer.sprite = entityData.entityIcon;
     } 
     private void UpdateHealthText() { 
         if(healthText != null) { 

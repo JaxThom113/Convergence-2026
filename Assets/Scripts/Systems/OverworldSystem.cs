@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OverworldSystem : MonoBehaviour
+public class OverworldSystem : Singleton<OverworldSystem>
 { 
     public EnemyView enemyView;  
     public EnemySO enemyData; 
@@ -11,5 +11,9 @@ public class OverworldSystem : MonoBehaviour
     }
     private void SetupEnemy() { 
         enemyView.Setup(enemyData);
+    } 
+    public EnemySO GetCurrentEnemy() { 
+        //FIXME: HAVE MULTIPLE ENEMIES IN THE FUTURE
+        return enemyData;
     }
 }

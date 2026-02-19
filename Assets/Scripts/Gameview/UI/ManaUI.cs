@@ -10,10 +10,6 @@ public class ManaUI : MonoBehaviour
     {
         manaText.text = manaAmount.ToString();
     } 
-    void Update(){ 
-        if(ManaSystem.Instance != null) {
-            Debug.Log("ManaSystem.Instance: ONLINE");
-        }
-    }
+    
 
 }

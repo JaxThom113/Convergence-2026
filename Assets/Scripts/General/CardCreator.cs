@@ -6,7 +6,8 @@ public class CardCreator : Singleton<CardCreator>
 {  
     //Both enemy and player can use 
     [SerializeField] private Canvas canvas;
-    [SerializeField] private ApplyCard applyCardPrefab;
+    [SerializeField] private ApplyCard applyCardPrefab; 
+    public float cardScale = 0.25f;
     public ApplyCard CreateCard(Card card, Vector3 position, Quaternion rotation, bool isEnemy)
     {
         ApplyCard applyCard = Instantiate(applyCardPrefab, canvas.transform); 
@@ -14,7 +15,7 @@ public class CardCreator : Singleton<CardCreator>
         applyCard.transform.rotation = rotation;  
         applyCard.Setup(card); 
         applyCard.InventoryCard = isEnemy;
-        applyCard.transform.DOScale(Vector3.one*0.3f, 0.15f); 
+        applyCard.transform.DOScale(Vector3.one*cardScale, 0.15f ); 
         return applyCard; 
     }
 }

@@ -15,7 +15,11 @@ public class DamageSystem : Singleton<DamageSystem>
     void OnDisable() 
     { 
         ActionSystem.DetachPerformer<DealDamageGA>();
-    }  
+    }   
+    public void Setup(PlayerView playerView, EnemyView enemyView) {
+        this.playerView = playerView;
+        this.enemyView = enemyView;
+    }
     private IEnumerator DealDamagePerformer(DealDamageGA dealDamageGA) { 
         int damageAmount = dealDamageGA.Amount;  
         if(dealDamageGA.isPlayer) { 

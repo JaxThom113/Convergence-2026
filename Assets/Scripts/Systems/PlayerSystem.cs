@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class PlayerSystem : Singleton<PlayerSystem>
 {
-    [SerializeField] public Player player {get; private set;} 
+    public Player player;
 
     public void Setup(PlayerSO playerData)
-    { 
+    {  
+        Debug.Log("PlayerSystem Setup");
         player = new Player();
         player.Setup(playerData);
     }

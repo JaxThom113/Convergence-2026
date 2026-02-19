@@ -98,7 +98,7 @@ public class LevelManager : Singleton<LevelManager>
         // take control from player, have player continue moving upward
         playerMovement.enabled = false;
         playerMovement.ContinueUp();
-
+        SceneTransitionSystem.Instance.enemyData = OverworldSystem.Instance.GetCurrentEnemy();
         // transition swipe effect
         transitionScreen.SetActive(true);
         transitionScreen.transform.DOMoveY(0, 0.5f).SetEase(Ease.OutCubic);
