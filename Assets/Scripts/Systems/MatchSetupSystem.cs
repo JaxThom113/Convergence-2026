@@ -9,20 +9,24 @@ public class MatchSetupSystem : MonoBehaviour
     [SerializeField] public EnemySO enemyData; 
     [SerializeField] public PlayerView playerView;
     [SerializeField] public EnemyView enemyView;
-    private void Start(){   
-        SetupEntities();
-        SetupCards(); 
+    private void OnEnable(){  
+        
+        SetupViews();
+        StartCoroutine(SetupCards()); 
 
-    }  
- 
-    private void SetupEntities(){ 
-        PlayerSystem.Instance.Setup(playerData); 
-        EnemySystem.Instance.Setup(enemyData);  
+    }   
+    private void SetupViews(){ 
         playerView.Setup(playerData);
-        enemyView.Setup(enemyData);
+        enemyView.Setup(enemyData); 
+        PlayerSystem.Instance.Setup(playerData);
+        EnemySystem.Instance.Setup(enemyData); 
+        DamageSystem.Instance.Setup(playerView, enemyView);
     }
+ 
 
-    private void SetupCards(){ 
+    private IEnumerator SetupCards(){  
+        yield return new WaitForSeconds(1f); 
+        
         List<CardSO> playerDeck = PlayerSystem.Instance.player.playerDeck;  
         List<CardSOList> enemyDeck = EnemySystem.Instance.enemy.enemyDeck; 
         Inventory.Instance.Setup(playerDeck);

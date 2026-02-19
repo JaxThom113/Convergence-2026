@@ -6,7 +6,7 @@ public class ManaSystem : Singleton<ManaSystem>
 {
     [SerializeField] public ManaUI manaUI; 
 
-    public int maxMana = 3;
+    public int maxMana = 10;
     private int currentMana;   
 
     private void Start() 
@@ -31,7 +31,7 @@ public class ManaSystem : Singleton<ManaSystem>
     } 
     public void TestMana()
     {
-        Debug.Log("TestMana: " + currentMana);
+        
     }
 
     private IEnumerator SpendManaPerformer(SpendManaGA spendManaGA)

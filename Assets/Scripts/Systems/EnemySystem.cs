@@ -9,7 +9,8 @@ public class EnemySystem : Singleton<EnemySystem>
     public void Setup(EnemySO enemyData)
     {
         enemy = new Enemy();
-        enemy.Setup(enemyData);
+        enemy.Setup(enemyData); 
+       
     }
     //Performers are created in the system
     void OnEnable()
@@ -41,7 +42,7 @@ public class EnemySystem : Singleton<EnemySystem>
             
         } 
           yield return new WaitForSeconds(1f);
-        enemyTurnCount++;
+        
 
     }  
     public List<CardSO> GetCurrentEnemyHand()
@@ -49,6 +50,11 @@ public class EnemySystem : Singleton<EnemySystem>
         return enemy.enemyDeck[enemyTurnCount].enemyHand;
     } 
     public int GetDrawAmount() { 
+        if(enemyTurnCount >= enemy.enemyDeck.Count ) {
+            enemyTurnCount = 0;
+        } else {
+            enemyTurnCount++;
+        }
         return enemy.enemyDeck[enemyTurnCount].enemyHand.Count;
     }
 

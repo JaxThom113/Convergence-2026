@@ -45,9 +45,10 @@ public class ProcGen3 : MonoBehaviour
     private const int gridSize = 15;
     private Vector2Int start = new Vector2Int(0, 0);
     private Vector2Int end = new Vector2Int(0, gridSize - 1);
-
+    [HideInInspector] private List<Vector2Int> correctPath;
     // 3D elements
-    private GameObject wallsContainer;
+    private GameObject wallsContainer; 
+    private GameObject enemyContainer;
 
     void Start()
     {
@@ -188,7 +189,7 @@ public class ProcGen3 : MonoBehaviour
     void GeneratePath()
     {
         List<Vector2Int> path = AStar.AStarFindPath(grid, gridSize, start, end);
-
+        correctPath = path;
         if (path != null && path.Count > 0)
         {
             Debug.Log("Path found with " + path.Count + " tiles");
@@ -215,7 +216,7 @@ public class ProcGen3 : MonoBehaviour
         
         // Create new container
         wallsContainer = new GameObject("WallsContainer");
-
+        wallsContainer.transform.parent = transform.parent;
         Vector3Int playerPos = new Vector3Int(0, 0, 0);
 
         // take the values from the grid array and draw them to the tilegrid
@@ -241,7 +242,8 @@ public class ProcGen3 : MonoBehaviour
 
                     Vector3 cubePos = edgeTilemap.GetCellCenterWorld(topEdgePos);
                     cubePos.z = -0.5f;
-                    Instantiate(edgeCube, cubePos, Quaternion.identity, wallsContainer.transform);
+                     Instantiate(edgeCube, cubePos, Quaternion.identity, wallsContainer.transform);
+                    
                 }
             }
 
@@ -311,9 +313,27 @@ public class ProcGen3 : MonoBehaviour
 
     void SpawnEnemiesAlongPath()
     {
+         // destroy old enemies
+        if (enemyContainer != null)
+        {
+            Destroy(enemyContainer);
+        }
+        enemyContainer = new GameObject("EnemyContainer"); // recreate container
+        enemyContainer.transform.parent = transform.parent;
         // have one enemy spawn for each unit of distance along the intended path
+        int step = Random.Range(8, 16);
 
+        for (int i = step; i < correctPath.Count; i += step)
+        {
+            step = Random.Range(8, 16);
+            grid[correctPath[i].x][correctPath[i].y] = 3;
 
+            Vector3Int gridPos = new Vector3Int(correctPath[i].x, correctPath[i].y, 0);
+            Vector3 pos = floorTilemap.GetCellCenterWorld(gridPos);
+            Vector3 offsetPos = new Vector3(pos.x, pos.y, 0);
+
+            Instantiate(enemy, offsetPos, Quaternion.identity, enemyContainer.transform);
+        }
     }
 
     void SpawnLootDeadEnds()
