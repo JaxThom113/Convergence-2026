@@ -1,27 +1,27 @@
 # Runedraw
 
-<img alt="Runedraw Logo" width="500" src="./Assets/Art/UI/Menus/Runedraw_Logo.png">
-<img alt="Runedraw Logo" width="500" src="./Assets/Art/UI/Menus/Runedraw_Poster.png">
+<img alt="Runedraw Logo" width="400" src="./Assets/Art/UI/Menus/Runedraw_Logo.png">
+<img alt="Runedraw Logo" width="400" src="./Assets/Art/UI/Menus/Runedraw_Poster.png">
 
 Group project for UF Digital Worlds Convergence 2026
 
 ## Links
 
-**Itch:** https://cidthunder.itch.io/runedraw
+**Itch:** https://hudelsontyler8.itch.io/runedraw
 
 **Behance:** https://www.behance.net/gallery/245282559/RuneDraw
 
 ## Credits
 
 Programmers
-- Elijah Lowe ([@elijahlowe77](https://github.com/elijahlowe77)) - [Card Game System Design, Shaders]
-- Jaxon Kundrat ([@JaxThom113](https://github.com/JaxThom113)) - [Overworld Level Generation, UI/UX]
+- Elijah Lowe ([@elijahlowe77](https://github.com/elijahlowe77)) - [Card Game Systems, VFX]
+- Jaxon Kundrat ([@JaxThom113](https://github.com/JaxThom113)) - [Level Generation, UI/UX]
 
 Artists
-- Tyler Hudelson - [Project Manager, Audio Design]
-- Duane Huynh - [3D Models, Environmental Design]
-- Connor Benson - [Character / Card Design, UI Elements]
-- Khaleed Kirkland - [Character / Card Design]
+- Tyler Hudelson - [Project Lead, Audio, Card Art]
+- Duane Huynh - [3D Models, Video Design]
+- Connor Benson - [Lead Artist, Character/UI/Card Art]
+- Khaleed Kirkland - [Character/UI/Card Art]
 
 <img alt="Jadeck Studios Logo" width="200" src="./Assets/Art/UI/Menus/JadeckLogo(White Text).png">
 
